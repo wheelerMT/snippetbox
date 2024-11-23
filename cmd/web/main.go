@@ -7,10 +7,12 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"snippetbox.wheelermt.net/internal/models"
 )
 
 type application struct {
-	logger *slog.Logger
+	logger   *slog.Logger
+	snippets *models.SnippetModel
 }
 
 func main() {
@@ -28,7 +30,10 @@ func main() {
 
 	defer db.Close()
 
-	app := &application{logger: logger}
+	app := &application{
+		logger:   logger,
+		snippets: &models.SnippetModel{DB: db},
+	}
 
 	logger.Info("starting server", "addr", *addr)
 
